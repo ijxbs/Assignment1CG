@@ -37,6 +37,8 @@ bool BackendHandler::InitAll()
 	if (!InitGLAD())
 		return 1;
 
+	Framebuffer::InitFullscreenQuad();
+
 	InitImGui();
 }
 
@@ -46,6 +48,14 @@ void BackendHandler::GlfwWindowResizedCallback(GLFWwindow* window, int width, in
 	Application::Instance().ActiveScene->Registry().view<Camera>().each([=](Camera& cam) 
 	{
 		cam.ResizeWindow(width, height);
+	});
+	Application::Instance().ActiveScene->Registry().view<Framebuffer>().each([=](Framebuffer& buf)
+	{
+		buf.Reshape(width, height);
+	});
+	Application::Instance().ActiveScene->Registry().view<PostEffect>().each([=](PostEffect& buf)
+	{
+		buf.Reshape(width, height);
 	});
 }
 

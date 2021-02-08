@@ -53,6 +53,11 @@ int main() {
 		shader->LoadShaderPartFromFile("shaders/frag_blinn_phong_textured.glsl", GL_FRAGMENT_SHADER);
 		shader->Link();
 
+		Shader::sptr colorCorrectionShader = Shader::Create();
+		colorCorrectionShader->LoadShaderPartFromFile("shaders/passthrough_vert.glsl", GL_VERTEX_SHADER);
+		colorCorrectionShader->LoadShaderPartFromFile("shaders/color_correction_frag.glsl", GL_FRAGMENT_SHADER);
+		colorCorrectionShader->Link();
+
 		glm::vec3 lightPos = glm::vec3(0.0f, 0.0f, 2.0f);
 		glm::vec3 lightCol = glm::vec3(0.9f, 0.85f, 0.5f);
 		float     lightAmbientPow = 0.05f;
@@ -61,6 +66,9 @@ int main() {
 		float     ambientPow = 0.1f;
 		float     lightLinearFalloff = 0.09f;
 		float     lightQuadraticFalloff = 0.032f;
+
+		float colorSlider = 0.0f;
+		float colorOption = 0.0f;
 
 		// These are our application / scene level uniforms that don't necessarily update
 		// every frame
@@ -107,9 +115,15 @@ int main() {
 				}
 			}
 
-			
-					
-			
+			if (ImGui::CollapsingHeader("Color Correction Settings"))
+			{
+				ImGui::Text("0 for normal, 1 for cool, 2 for warm, and 3 for custom");
+
+				if (ImGui::SliderFloat("Color Correction", &colorSlider, 0.0f, 3.0f))
+				{
+					colorOption = colorSlider;
+				}
+			}
 
 			auto name = controllables[selectedVao].get<GameObjectTag>().Name;
 			ImGui::Text(name.c_str());
@@ -144,6 +158,11 @@ int main() {
 		Texture2D::sptr diffuse2 = Texture2D::LoadFromFile("images/box.bmp");
 		Texture2D::sptr specular = Texture2D::LoadFromFile("images/Stone_001_Specular.png");
 		Texture2D::sptr reflectivity = Texture2D::LoadFromFile("images/box-reflections.bmp");
+		//LUT3D colorCube("cubes/CustomCorrection.cube");
+		LUT3D defaultCube("cubes/Neutral-512.cube"); //default colours
+		LUT3D coolCube("cubes/cool_lut.cube");
+		LUT3D warmCube("cubes/warm_lut.cube");
+		LUT3D customCube("cubes/custom_lut.cube");
 
 		// Load the cube map
 		//TextureCubeMap::sptr environmentMap = TextureCubeMap::LoadFromImages("images/cubemaps/skybox/sample.jpg");
@@ -314,6 +333,18 @@ int main() {
 			BehaviourBinding::Bind<CameraControlBehaviour>(cameraObject);
 		}
 
+		int width, height;
+		glfwGetWindowSize(BackendHandler::window, &width, &height);
+
+		Framebuffer* colorCorrect;
+		GameObject colorCorrectionObj = scene->CreateEntity("Color Correct");
+		{
+			colorCorrect = &colorCorrectionObj.emplace<Framebuffer>();
+			colorCorrect->AddColorTarget(GL_RGBA8);
+			colorCorrect->AddDepthTarget();
+			colorCorrect->Init(width, height);
+		}
+
 		#pragma endregion 
 		//////////////////////////////////////////////////////////////////////////////////////////
 
@@ -458,6 +489,8 @@ int main() {
 			});
 
 			// Clear the screen
+			colorCorrect->Clear();
+
 			glClearColor(0.08f, 0.17f, 0.31f, 1.0f);
 			glEnable(GL_DEPTH_TEST);
 			glClearDepth(1.0f);
@@ -495,6 +528,8 @@ int main() {
 			// Start by assuming no shader or material is applied
 			Shader::sptr current = nullptr;
 			ShaderMaterial::sptr currentMat = nullptr;
+			
+			colorCorrect->Bind();
 
 			// Iterate over the render group components and draw them
 			renderGroup.each( [&](entt::entity e, RendererComponent& renderer, Transform& transform) {
@@ -512,6 +547,49 @@ int main() {
 				// Render the mesh
 				BackendHandler::RenderVAO(renderer.Material->Shader, renderer.Mesh, viewProjection, transform);
 			});
+
+			colorCorrect->Unbind();
+			colorCorrectionShader->Bind();
+
+			colorCorrect->BindColorAsTexture(0, 0);
+
+			if (colorOption < 1)
+			{
+				defaultCube.bind(30);
+
+				colorCorrect->DrawFullscreenQuad();
+
+				defaultCube.unbind(30);
+			}
+			else if (colorOption < 2)
+			{
+				coolCube.bind(30);
+
+				colorCorrect->DrawFullscreenQuad();
+
+				coolCube.unbind(30);
+			}
+			else if (colorOption < 3)
+			{
+				warmCube.bind(30);
+
+				colorCorrect->DrawFullscreenQuad();
+
+				warmCube.unbind(30);
+			}
+			else if (colorOption == 3)
+			{
+				customCube.bind(30);
+
+				colorCorrect->DrawFullscreenQuad();
+
+				customCube.unbind(30);
+			}
+			
+			colorCorrect->UnbindTexture(0);
+
+			colorCorrectionShader->UnBind();
+
 
 			// Draw our ImGui content
 			BackendHandler::RenderImGui();
