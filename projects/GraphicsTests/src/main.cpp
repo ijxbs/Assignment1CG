@@ -160,7 +160,7 @@ int main() {
 		Texture2D::sptr reflectivity = Texture2D::LoadFromFile("images/box-reflections.bmp");
 		//LUT3D colorCube("cubes/CustomCorrection.cube");
 		LUT3D defaultCube("cubes/Neutral-512.cube"); //default colours
-		//color cubes, cool, warm, and custom
+		//color cubes
 		LUT3D coolCube("cubes/cool_lut.cube");
 		LUT3D warmCube("cubes/warm_lut.cube");
 		LUT3D customCube("cubes/custom_lut.cube");
