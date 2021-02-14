@@ -258,11 +258,12 @@ int main() {
 			BehaviourBinding::BindDisabled<SimpleMoveBehaviour>(obj2);
 		}
 
-		GameObject obj3 = scene->CreateEntity("monkey_tris");
+		GameObject obj3 = scene->CreateEntity("paddle1");
 		{
-			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/ricee.obj");
-			obj3.emplace<RendererComponent>().SetMesh(vao).SetMaterial(reflectiveMat);
-			obj3.get<Transform>().SetLocalPosition(0.0f, 0.0f, 0.0f);
+			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/red_paddle.obj");
+			obj3.emplace<RendererComponent>().SetMesh(vao).SetMaterial(material0);
+			obj3.get<Transform>().SetLocalPosition(2.0f, 2.0f, 0.0f);
+			obj3.get<Transform>().SetLocalRotation(90.0f, 0.0f, 0.0f);
 			BehaviourBinding::BindDisabled<SimpleMoveBehaviour>(obj3);
 		}
 
@@ -299,12 +300,12 @@ int main() {
 			pathing->Speed = 2.0f;
 		}
 
-		GameObject obj6 = scene->CreateEntity("following_monkey");
+		GameObject obj6 = scene->CreateEntity("johnny");
 		{
-			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/scarecroww.obj");
+			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/JohnnyEmote.obj");
 			obj6.emplace<RendererComponent>().SetMesh(vao).SetMaterial(reflectiveMat);
 			obj6.get<Transform>().SetLocalPosition(0.0f, 0.0f, 3.0f);
-			//obj6.get<Transform>().SetLocalRotation(0.0f, 0.0f, -360.0f);
+			obj6.get<Transform>().SetLocalRotation(90.0f, 0.0f, 0.0f);
 	
 
 			obj6.get<Transform>().SetParent(obj4);
@@ -316,8 +317,23 @@ int main() {
 			pathing->Speed = 2.0f;
 		}
 
+		GameObject obj7 = scene->CreateEntity("paddle2");
+		{
+			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/red_paddle.obj");
+			obj7.emplace<RendererComponent>().SetMesh(vao).SetMaterial(reflectiveMat);
+			obj7.get<Transform>().SetLocalPosition(2.0f, 0.0f, 0.0f);
+			obj7.get<Transform>().SetLocalRotation(90.0f, 0.0f, 0.0f);
+			BehaviourBinding::BindDisabled<SimpleMoveBehaviour>(obj7);
+		}
 	
-
+		GameObject obj8 = scene->CreateEntity("paddle2");
+		{
+			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/dagger.obj");
+			obj8.emplace<RendererComponent>().SetMesh(vao).SetMaterial(reflectiveMat);
+			obj8.get<Transform>().SetLocalPosition(4.0f, 0.0f, 2.0f);
+			obj8.get<Transform>().SetLocalRotation(0.0f, 0.0f, 0.0f);
+			BehaviourBinding::BindDisabled<SimpleMoveBehaviour>(obj8);
+		}
 		
 		// Create an object to be our camera
 		GameObject cameraObject = scene->CreateEntity("Camera");
