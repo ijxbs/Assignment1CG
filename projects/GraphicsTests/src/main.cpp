@@ -270,8 +270,8 @@ int main() {
 		GameObject obj3 = scene->CreateEntity("paddle1");
 		{
 			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/red_paddle.obj");
-			obj3.emplace<RendererComponent>().SetMesh(vao).SetMaterial(material0);
-			obj3.get<Transform>().SetLocalPosition(2.0f, 2.0f, 0.0f);
+			obj3.emplace<RendererComponent>().SetMesh(vao).SetMaterial(reflectiveMat);
+			obj3.get<Transform>().SetLocalPosition(0.0f, 0.0f, 0.0f);
 			obj3.get<Transform>().SetLocalRotation(90.0f, 0.0f, 0.0f);
 			BehaviourBinding::BindDisabled<SimpleMoveBehaviour>(obj3);
 		}
