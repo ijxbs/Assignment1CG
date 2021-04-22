@@ -242,12 +242,12 @@ int main() {
 		reflectiveMat->Set("s_Environment", environmentMap);
 		reflectiveMat->Set("u_EnvironmentRotation", glm::mat3(glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(1, 0, 0))));
 
-		GameObject sceneObj = scene->CreateEntity("scene_geo"); 
-		{
-			VertexArrayObject::sptr sceneVao = NotObjLoader::LoadFromFile("Sample.notobj");
-			sceneObj.emplace<RendererComponent>().SetMesh(sceneVao).SetMaterial(material1);
-			sceneObj.get<Transform>().SetLocalPosition(0.0f, 0.0f, 0.0f);
-		}
+		//GameObject sceneObj = scene->CreateEntity("scene_geo"); 
+		//{
+		//	VertexArrayObject::sptr sceneVao = NotObjLoader::LoadFromFile("Sample.notobj");
+		//	sceneObj.emplace<RendererComponent>().SetMesh(sceneVao).SetMaterial(material1);
+		//	sceneObj.get<Transform>().SetLocalPosition(0.0f, 0.0f, 0.0f);
+		//}
 
 		//GameObject wall1 = scene->CreateEntity("one_of_walls");
 		//{
@@ -328,7 +328,7 @@ int main() {
 
 		GameObject obj7 = scene->CreateEntity("paddle2");
 		{
-			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/aircraft.obj");
+			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/blue_paddle.obj");
 			obj7.emplace<RendererComponent>().SetMesh(vao).SetMaterial(reflectiveMat);
 			obj7.get<Transform>().SetLocalPosition(2.0f, 0.0f, 0.0f);
 			obj7.get<Transform>().SetLocalRotation(90.0f, 0.0f, 0.0f);
@@ -362,6 +362,16 @@ int main() {
 			obj10.get<Transform>().SetLocalRotation(0.0f, 90.0f, 90.0f);
 			obj10.get<Transform>().SetLocalScale(5.0f, 5.0f, 5.0f);
 			BehaviourBinding::BindDisabled<SimpleMoveBehaviour>(obj10);
+		}
+
+		GameObject obj11 = scene->CreateEntity("floor");
+		{
+			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/plane.obj");
+			obj11.emplace<RendererComponent>().SetMesh(vao).SetMaterial(material0);
+			obj11.get<Transform>().SetLocalPosition(0.0f, 0.0f, 0.0f);
+			obj11.get<Transform>().SetLocalRotation(0.0f, 0.0f, 0.0f);
+			obj11.get<Transform>().SetLocalScale(5.0f, 5.0f, 5.0f);
+			BehaviourBinding::BindDisabled<SimpleMoveBehaviour>(obj11);
 		}
 
 
