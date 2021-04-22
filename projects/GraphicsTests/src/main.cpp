@@ -249,6 +249,15 @@ int main() {
 			sceneObj.get<Transform>().SetLocalPosition(0.0f, 0.0f, 0.0f);
 		}
 
+		//GameObject wall1 = scene->CreateEntity("one_of_walls");
+		//{
+		//	VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("plane.obj");
+		//	wall1.emplace<RendererComponent>().SetMesh(vao).SetMaterial(material0);
+		//	wall1.get<Transform>().SetLocalPosition(-5.0f, 0.0f, 0.0f);
+		//	wall1.get<Transform>().SetLocalRotation(0.0f, 90.0f, 0.0f);
+		//	BehaviourBinding::BindDisabled<SimpleMoveBehaviour>(wall1);
+		//}
+
 		
 		GameObject obj2 = scene->CreateEntity("monkey_quads");
 		{
@@ -280,46 +289,46 @@ int main() {
 		}
 		
 
-		GameObject obj4 = scene->CreateEntity("moving_box");
-		{
-			// Build a mesh
-			MeshBuilder<VertexPosNormTexCol> builder = MeshBuilder<VertexPosNormTexCol>();
-			MeshFactory::AddCube(builder, glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(0.0f), glm::vec4(1.0f, 0.5f, 0.5f, 1.0f));
-			VertexArrayObject::sptr vao = builder.Bake();
-			
-			obj4.emplace<RendererComponent>().SetMesh(vao).SetMaterial(material0);
-			obj4.get<Transform>().SetLocalPosition(-2.0f, 0.0f, 1.0f);
+		//GameObject obj4 = scene->CreateEntity("moving_box");
+		//{
+		//	// Build a mesh
+		//	MeshBuilder<VertexPosNormTexCol> builder = MeshBuilder<VertexPosNormTexCol>();
+		//	MeshFactory::AddCube(builder, glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(0.0f), glm::vec4(1.0f, 0.5f, 0.5f, 1.0f));
+		//	VertexArrayObject::sptr vao = builder.Bake();
+		//	
+		//	obj4.emplace<RendererComponent>().SetMesh(vao).SetMaterial(material0);
+		//	obj4.get<Transform>().SetLocalPosition(-2.0f, 0.0f, 1.0f);
 
-			// Bind returns a smart pointer to the behaviour that was added
-			auto pathing = BehaviourBinding::Bind<FollowPathBehaviour>(obj4);
-			// Set up a path for the object to follow
-			pathing->Points.push_back({ -4.0f, -4.0f, 0.0f });
-			pathing->Points.push_back({ 4.0f, -4.0f, 0.0f });
-			pathing->Points.push_back({ 4.0f,  4.0f, 0.0f });
-			pathing->Points.push_back({ -4.0f,  4.0f, 0.0f });
-			pathing->Speed = 2.0f;
-		}
+		//	// Bind returns a smart pointer to the behaviour that was added
+		//	auto pathing = BehaviourBinding::Bind<FollowPathBehaviour>(obj4);
+		//	// Set up a path for the object to follow
+		//	pathing->Points.push_back({ -4.0f, -4.0f, 0.0f });
+		//	pathing->Points.push_back({ 4.0f, -4.0f, 0.0f });
+		//	pathing->Points.push_back({ 4.0f,  4.0f, 0.0f });
+		//	pathing->Points.push_back({ -4.0f,  4.0f, 0.0f });
+		//	pathing->Speed = 2.0f;
+		//}
 
-		GameObject obj6 = scene->CreateEntity("johnny");
-		{
-			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/JohnnyEmote.obj");
-			obj6.emplace<RendererComponent>().SetMesh(vao).SetMaterial(reflectiveMat);
-			obj6.get<Transform>().SetLocalPosition(0.0f, 0.0f, 3.0f);
-			obj6.get<Transform>().SetLocalRotation(90.0f, 0.0f, 0.0f);
+		//GameObject obj6 = scene->CreateEntity("johnny");
+		//{
+		//	VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/JohnnyEmote.obj");
+		//	obj6.emplace<RendererComponent>().SetMesh(vao).SetMaterial(reflectiveMat);
+		//	obj6.get<Transform>().SetLocalPosition(0.0f, 0.0f, 3.0f);
+		//	obj6.get<Transform>().SetLocalRotation(90.0f, 0.0f, 0.0f);
 	
 
-			obj6.get<Transform>().SetParent(obj4);
-			
-			auto pathing = BehaviourBinding::Bind<FollowPathBehaviour>(obj6);
-			// Set up a path for the object to follow
-			pathing->Points.push_back({ 0.0f, -2.5f, 2.5f });
-			pathing->Points.push_back({ 0.0f, -2.5f, 2.5f });
-			pathing->Speed = 2.0f;
-		}
+		//	obj6.get<Transform>().SetParent(obj4);
+		//	
+		//	auto pathing = BehaviourBinding::Bind<FollowPathBehaviour>(obj6);
+		//	// Set up a path for the object to follow
+		//	pathing->Points.push_back({ 0.0f, -2.5f, 2.5f });
+		//	pathing->Points.push_back({ 0.0f, -2.5f, 2.5f });
+		//	pathing->Speed = 2.0f;
+		//}
 
 		GameObject obj7 = scene->CreateEntity("paddle2");
 		{
-			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/red_paddle.obj");
+			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/aircraft.obj");
 			obj7.emplace<RendererComponent>().SetMesh(vao).SetMaterial(reflectiveMat);
 			obj7.get<Transform>().SetLocalPosition(2.0f, 0.0f, 0.0f);
 			obj7.get<Transform>().SetLocalRotation(90.0f, 0.0f, 0.0f);
@@ -331,10 +340,31 @@ int main() {
 			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/dagger.obj");
 			obj8.emplace<RendererComponent>().SetMesh(vao).SetMaterial(reflectiveMat);
 			obj8.get<Transform>().SetLocalPosition(4.0f, 0.0f, 2.0f);
-			obj8.get<Transform>().SetLocalRotation(0.0f, 0.0f, 0.0f);
+			obj8.get<Transform>().SetLocalRotation(0.0f, -90.0f, 0.0f);
 			BehaviourBinding::BindDisabled<SimpleMoveBehaviour>(obj8);
 		}
-		
+
+		GameObject obj9 = scene->CreateEntity("wall1");
+		{
+			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/plane.obj");
+			obj9.emplace<RendererComponent>().SetMesh(vao).SetMaterial(material0 );
+			obj9.get<Transform>().SetLocalPosition(-5.0f, 0.0f, 2.0f);
+			obj9.get<Transform>().SetLocalRotation(0.0f, 90.0f, 0.0f);
+			obj9.get<Transform>().SetLocalScale(5.0f, 5.0f, 5.0f);
+			BehaviourBinding::BindDisabled<SimpleMoveBehaviour>(obj9);
+		}
+
+		GameObject obj10 = scene->CreateEntity("wall2");
+		{
+			VertexArrayObject::sptr vao = ObjLoader::LoadFromFile("models/plane.obj");
+			obj10.emplace<RendererComponent>().SetMesh(vao).SetMaterial(material0);
+			obj10.get<Transform>().SetLocalPosition(0.0f, -5.0f, 2.0f);
+			obj10.get<Transform>().SetLocalRotation(0.0f, 90.0f, 90.0f);
+			obj10.get<Transform>().SetLocalScale(5.0f, 5.0f, 5.0f);
+			BehaviourBinding::BindDisabled<SimpleMoveBehaviour>(obj10);
+		}
+
+
 		// Create an object to be our camera
 		GameObject cameraObject = scene->CreateEntity("Camera");
 		{
