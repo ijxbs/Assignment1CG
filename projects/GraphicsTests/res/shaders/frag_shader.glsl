@@ -1,8 +1,8 @@
 #version 410
 
-out vec4 FragColor;
+out vec4 fragCol;
 
-in vec2 TexCoords;
+in vec2 texCoords;
 
 uniform sampler2D image;
 
@@ -12,13 +12,13 @@ uniform float weight[5] = float (0.227027, 0.1945946, 0.1216216, 0.054054, 0.016
 
 void main() { 
 	vec2 text_offset = 1.0 / textureSize(image, 0);
-	vec3 result = texture(image, TexCoords).rgb * weight[0];
+	vec3 result = texture(image, texCoords).rgb * weight[0];
 	if(horizontal)
 	{
 		for(int i = 1; i < 5; ++i)
 		{
-			result += texture(image, TexCoords + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
-			result += texture(image, TexCoords - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
+			result += texture(image, texCoords + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
+			result += texture(image, texCoords - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
 		}
 	}
 	else
@@ -29,5 +29,5 @@ void main() {
             result += texture(image, TexCoords - vec2(0.0, tex_offset.y * i)).rgb * weight[i];
         }
 	}
-	FragColor = vec4(result, 1.0);
+	fragCol = vec4(result, 1.0);
 }
